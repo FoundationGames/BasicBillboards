@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "basicbillboards",
+  "version": "${version}",
+
+  "name": "Basic Billboards",
+  "description": "Huge signs to distract everyone",
+  "authors": [
+    "FoundationGames"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "MIT",
+  "icon": "assets/basicbillboards/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.foundationgames.basicbillboards.BasicBillboards"
+    ],
+	"client": [
+      "io.github.foundationgames.basicbillboards.BasicBillboardsClient"
+    ]
+  },
+  "mixins": [
+    "basicbillboards.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}

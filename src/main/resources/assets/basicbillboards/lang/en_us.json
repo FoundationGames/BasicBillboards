@@ -1,0 +1,10 @@
+{
+    "block.basicbillboards.billboard": "Billboard",
+    "button.basicbillboards.toggle_background": "Toggle Background",
+    "button.basicbillboards.toggle_border": "Toggle Border",
+    "button.basicbillboards.set_background_color": "Set Background Color",
+    "button.basicbillboards.set_border_color": "Set Border Color",
+    "button.basicbillboards.set_text_color": "Set Text Color",
+    "button.basicbillboards.set_size": "Set Size",
+    "button.basicbillboards.set_text": "Set Text"
+}
