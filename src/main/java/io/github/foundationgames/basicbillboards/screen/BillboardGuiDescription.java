@@ -1,10 +1,7 @@
 package io.github.foundationgames.basicbillboards.screen;
 
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
-import io.github.cottonmc.cotton.gui.widget.WButton;
-import io.github.cottonmc.cotton.gui.widget.WGridPanel;
-import io.github.cottonmc.cotton.gui.widget.WSlider;
-import io.github.cottonmc.cotton.gui.widget.WTextField;
+import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.Axis;
 import io.github.foundationgames.basicbillboards.BasicBillboards;
 import io.github.foundationgames.basicbillboards.block.entity.BillboardBlockEntity;
@@ -71,7 +68,25 @@ public class BillboardGuiDescription extends SyncedGuiDescription {
             blockEntity.clientSyncedModifyText(1, l2, dl2);
             blockEntity.clientSyncedModifyText(2, l3, dl3);
         });
-        root.add(button, 24, 3, 6, 7);
+        root.add(button, 24, 1, 9, 7);
+
+        WButton setTxtShadow = new WButton();
+        setTxtShadow.setLabel(new TranslatableText(blockEntity.textShadow() ? "button.basicbillboards.text_shadow_disable" : "button.basicbillboards.text_shadow_enable"));
+        setTxtShadow.setOnClick(() -> {
+            setTxtShadow.setLabel(new TranslatableText(!blockEntity.textShadow() ? "button.basicbillboards.text_shadow_disable" : "button.basicbillboards.text_shadow_enable"));
+            blockEntity.clientSyncedOperation(BillboardBlockEntity.Ops.SET_TXT_SHADOW, !blockEntity.textShadow() ? 1 : 0);
+        });
+        root.add(setTxtShadow, 24, 3, 9, 7);
+
+        WButton setGlowing = new WButton();
+        setGlowing.setLabel(new TranslatableText(blockEntity.glowing() ? "button.basicbillboards.glowing_disable" : "button.basicbillboards.glowing_enable"));
+        setGlowing.setOnClick(() -> {
+            setGlowing.setLabel(new TranslatableText(!blockEntity.glowing() ? "button.basicbillboards.glowing_disable" : "button.basicbillboards.glowing_enable"));
+            blockEntity.clientSyncedOperation(BillboardBlockEntity.Ops.SET_GLOWING, !blockEntity.glowing() ? 1 : 0);
+        });
+        root.add(setGlowing, 24, 5, 9, 7);
+
+
 
         WTextField txtcolor = new WTextField();
         txtcolor.setMaxLength(6);
@@ -114,6 +129,13 @@ public class BillboardGuiDescription extends SyncedGuiDescription {
         });
         root.add(setBdColor, 8, 14, 14, 7);
 
+        WButton toggleCtr = new WButton();
+        toggleCtr.setLabel(new TranslatableText(blockEntity.centered() ? "button.basicbillboards.center_align" : "button.basicbillboards.custom_align"));
+        toggleCtr.setOnClick(() -> {
+            toggleCtr.setLabel(new TranslatableText(!blockEntity.centered() ? "button.basicbillboards.center_align" : "button.basicbillboards.custom_align"));
+            blockEntity.clientSyncedOperation(BillboardBlockEntity.Ops.SET_CENTERED, !blockEntity.centered() ? 1 : 0);
+        });
+        root.add(toggleCtr, 23, 8, 10, 7);
 
         WButton toggleBd = new WButton();
         toggleBd.setLabel(new TranslatableText(blockEntity.showsBorder() ? "button.basicbillboards.hide_border" : "button.basicbillboards.show_border"));
@@ -139,10 +161,29 @@ public class BillboardGuiDescription extends SyncedGuiDescription {
         WButton setSize = new WButton();
         setSize.setLabel(new TranslatableText("button.basicbillboards.set_size"));
         setSize.setOnClick(() -> {
-            System.out.println(24 - sizeSlider.getValue());
             blockEntity.clientSyncedOperation(BillboardBlockEntity.Ops.SET_SIZE, 24 - sizeSlider.getValue());
         });
         root.add(setSize, 11, 17, 11, 7);
+
+        WLabel xAlLabel = new WLabel(new TranslatableText("label.basicbillboards.x_align"));
+        root.add(xAlLabel, 23, 17);
+
+        WSlider xSlider = new WSlider(0, 100, Axis.HORIZONTAL);
+        xSlider.setValue((int) (blockEntity.getXAlign() * 100));
+        xSlider.setDraggingFinishedListener(val -> {
+            blockEntity.clientSyncedOperation(BillboardBlockEntity.Ops.SET_X_ALIGN, val);
+        });
+        root.add(xSlider, 23, 17, 10, 3);
+
+        WLabel yAlLabel = new WLabel(new TranslatableText("label.basicbillboards.y_align"));
+        root.add(yAlLabel, 23, 19);
+
+        WSlider ySlider = new WSlider(0, 100, Axis.HORIZONTAL);
+        ySlider.setValue((int) (blockEntity.getYAlign() * 100));
+        ySlider.setDraggingFinishedListener(val -> {
+            blockEntity.clientSyncedOperation(BillboardBlockEntity.Ops.SET_Y_ALIGN, val);
+        });
+        root.add(ySlider, 23, 19, 10, 3);
 
         root.validate(this);
     }

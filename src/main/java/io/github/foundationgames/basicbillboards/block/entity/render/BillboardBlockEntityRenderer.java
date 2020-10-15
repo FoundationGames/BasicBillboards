@@ -45,32 +45,50 @@ public class BillboardBlockEntityRenderer extends BlockEntityRenderer<BillboardB
 
         TextRenderer textRenderer = this.dispatcher.getTextRenderer();
 
+        //System.out.println(light);
+
+        if(entity.glowing()) light = 15728864;
+
         int mw = 0;
         int h = 0;
 
+        for (int i = 0; i < 3; i++) {
+            LiteralText txt = entity.getTexts().getOrDefault(i, null);
+            //float x = (float)(-textRenderer.getWidth(txt) / 2);
+            if(txt != null && txt.asString().length() > 0) {
+                mw = Math.max(mw, textRenderer.getWidth(txt));
+                h++;
+            }
+        }
+
         matrices.translate(-1, -1, 0);
+
+        if(entity.centered()) {
+            matrices.translate(-(float)(mw + 6) / 2, -(float)((h * 14)) / 2, 0);
+            matrices.translate(0.5 * s, 0.5 * s, 0);
+        } else {
+            matrices.translate(-(float)(mw + 6) * entity.getXAlign(), -(float)((h * 14)) * entity.getYAlign(), 0);
+        }
 
         Color bdc = new Color(entity.getBDColor());
         Color bgc = new Color(entity.getBGColor());
 
         for (int i = 0; i < 3; i++) {
             LiteralText txt = entity.getTexts().getOrDefault(i, null);
-            //float x = (float)(-textRenderer.getWidth(txt) / 2);
             if(txt != null && txt.asString().length() > 0) {
-                textRenderer.draw(txt, 4, 4 + (i * 14), entity.getTextColor(), true, matrices.peek().getModel(), vertexConsumers, false, 0, light);
-                mw = Math.max(mw, textRenderer.getWidth(txt));
-                h++;
+                textRenderer.draw(txt, 4, 4 + (i * 14), entity.getTextColor(), entity.textShadow(), matrices.peek().getModel(), vertexConsumers, false, 0, light);
             }
         }
 
-        matrices.translate(0, 0, 0.02);
+        matrices.translate(0, 0, 0.04);
 
         if(entity.showsBackground()) fill(vertexConsumers, matrices, light, overlay, (float)bgc.getRed() / 255, (float)bgc.getGreen() / 255, (float)bgc.getBlue() / 255, 1f, 2, 2, mw + 4, (h * 14) - 2);
 
-        matrices.translate(0, 0, 0.022);
-
         if(entity.showsBorder()) {
-            fill(vertexConsumers, matrices, light, overlay, (float)bdc.getRed() / 255, (float)bdc.getGreen() / 255, (float)bdc.getBlue() / 255, 1f, 1, 1, mw + 6, (h * 14));
+            fill(vertexConsumers, matrices, light, overlay, (float)bdc.getRed() / 255, (float)bdc.getGreen() / 255, (float)bdc.getBlue() / 255, 1f, 1, 1, mw + 6, 1);
+            fill(vertexConsumers, matrices, light, overlay, (float)bdc.getRed() / 255, (float)bdc.getGreen() / 255, (float)bdc.getBlue() / 255, 1f, 1, (h*14), mw + 6, 1);
+            fill(vertexConsumers, matrices, light, overlay, (float)bdc.getRed() / 255, (float)bdc.getGreen() / 255, (float)bdc.getBlue() / 255, 1f, 1, 2, 1, (h*14) - 2);
+            fill(vertexConsumers, matrices, light, overlay, (float)bdc.getRed() / 255, (float)bdc.getGreen() / 255, (float)bdc.getBlue() / 255, 1f, mw + 6, 2, 1, (h*14) - 2);
         }
 
         matrices.pop();

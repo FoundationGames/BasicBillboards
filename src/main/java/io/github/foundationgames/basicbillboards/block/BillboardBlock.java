@@ -36,7 +36,7 @@ public class BillboardBlock extends BlockWithEntity {
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         if(ImmutableSet.of(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST).contains(ctx.getSide())) return getDefaultState().with(FACING, ctx.getSide());
-        return getDefaultState().with(FACING, ctx.getPlayerFacing());
+        return getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
     }
 
     @Override

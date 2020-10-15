@@ -10,5 +10,13 @@
     "button.basicbillboards.show_background": "Show Background",
     "button.basicbillboards.hide_background": "Hide Background",
     "button.basicbillboards.show_border": "Show Border",
-    "button.basicbillboards.hide_border": "Hide Border"
+    "button.basicbillboards.hide_border": "Hide Border",
+    "button.basicbillboards.custom_align": "Align: Custom",
+    "button.basicbillboards.center_align": "Align: Center",
+    "button.basicbillboards.text_shadow_enable": "Enable Shadow",
+    "button.basicbillboards.text_shadow_disable": "Disable Shadow",
+    "button.basicbillboards.glowing_enable": "Enable Glowing",
+    "button.basicbillboards.glowing_disable": "Disable Glowing",
+    "label.basicbillboards.x_align": "Custom Align X",
+    "label.basicbillboards.y_align": "Custom Align Y"
 }
