@@ -33,10 +33,10 @@ public class BillboardBlockEntity extends BlockEntity implements BlockEntityClie
 
     private boolean showBackground = true;
     private boolean showBorder = true;
-    private int backgroundColor = 0x060606;
-    private int borderColor = 0x6E6E6E;
-    private int textColor = 0xFFFFFF;
-    private int size = 1;
+    private int backgroundColor = 0xd7cec5;
+    private int borderColor = 0x353535;
+    private int textColor = 0x756f69;
+    private int size = 21;
     private final Int2ObjectMap<String> texts = Util.make(() -> {
         Int2ObjectMap<String> m = new Int2ObjectOpenHashMap<>();
         m.put(0, "Sample Text");
@@ -56,6 +56,12 @@ public class BillboardBlockEntity extends BlockEntity implements BlockEntityClie
     public Int2ObjectMap<LiteralText> getTexts() { return cachedTexts; }
 
     public int getTextColor() { return textColor; }
+    public int getBGColor() { return backgroundColor; }
+    public int getBDColor() { return borderColor; }
+    public int getSize() { return size; }
+
+    public boolean showsBackground() { return showBackground; }
+    public boolean showsBorder() { return showBorder; }
 
     @Override
     public void fromTag(BlockState state, CompoundTag tag) {
@@ -66,15 +72,13 @@ public class BillboardBlockEntity extends BlockEntity implements BlockEntityClie
         borderColor = tag.getInt("BorderColor");
         textColor = tag.getInt("TextColor");
         size = tag.getInt("Size");
-        ListTag list = tag.getList("Texts", 10);
+        CompoundTag list = tag.getCompound("Texts");
         texts.clear();
         cachedTexts.clear();
-        for (int i = 0; i < list.size(); i++) {
-            Tag t = list.get(i);
-            if(t instanceof CompoundTag) {
-                texts.put(i, ((CompoundTag)t).getString("txt"));
-                cachedTexts.put(i, new LiteralText(((CompoundTag)t).getString("txt")));
-            }
+        for(String s : list.getKeys()) {
+            int i = Integer.parseInt(s);
+            texts.put(i, list.getString(s));
+            cachedTexts.put(i, new LiteralText(list.getString(s)));
         }
     }
 
@@ -87,11 +91,9 @@ public class BillboardBlockEntity extends BlockEntity implements BlockEntityClie
         tag.putInt("BorderColor", borderColor);
         tag.putInt("TextColor", textColor);
         tag.putInt("Size", size);
-        ListTag list = new ListTag();
+        CompoundTag list = new CompoundTag();
         for(int i : texts.keySet()) {
-            CompoundTag t = new CompoundTag();
-            t.putString("txt", texts.get(i));
-            list.add(t);
+            list.putString(String.valueOf(i), texts.get(i));
         }
         tag.put("Texts", list);
         return tag;
@@ -124,8 +126,13 @@ public class BillboardBlockEntity extends BlockEntity implements BlockEntityClie
         else if(operation == Ops.SET_BG_COLOR) this.backgroundColor = data;
         else if(operation == Ops.SET_BORDER_COLOR) this.borderColor = data;
         else if(operation == Ops.SET_TXT_COLOR) this.textColor = data;
-        else if(operation == Ops.SET_SIZE) this.size = Math.min(data, 3);
+        else if(operation == Ops.SET_SIZE) this.size = data;
         if(!world.isClient()) sync();
+    }
+
+    @Override
+    public double getSquaredRenderDistance() {
+        return 667D;
     }
 
     public void modifyText(int line, String text, boolean delete) {

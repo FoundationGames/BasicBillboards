@@ -6,5 +6,9 @@
     "button.basicbillboards.set_border_color": "Set Border Color",
     "button.basicbillboards.set_text_color": "Set Text Color",
     "button.basicbillboards.set_size": "Set Size",
-    "button.basicbillboards.set_text": "Set Text"
+    "button.basicbillboards.set_text": "Set Text",
+    "button.basicbillboards.show_background": "Show Background",
+    "button.basicbillboards.hide_background": "Hide Background",
+    "button.basicbillboards.show_border": "Show Border",
+    "button.basicbillboards.hide_border": "Hide Border"
 }
