@@ -51,7 +51,7 @@ public class BasicBillboards implements ModInitializer {
             BlockPos pos = buf.readBlockPos();
             int line = buf.readInt();
             boolean delete = buf.readBoolean();
-            String text = buf.readString();
+            String text = buf.readString(32767);
             ctx.getTaskQueue().execute(() -> {
                 BlockEntity b = ctx.getPlayer().getEntityWorld().getBlockEntity(pos);
                 if(b instanceof BillboardBlockEntity) {

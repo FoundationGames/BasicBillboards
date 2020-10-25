@@ -28,7 +28,8 @@ public class BillboardBlockEntityRenderer extends BlockEntityRenderer<BillboardB
     public void render(BillboardBlockEntity entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
         matrices.push();
 
-        Direction dir = entity.getWorld().getBlockState(entity.getPos()).get(BillboardBlock.FACING);
+        Direction dir = Direction.NORTH;
+        if(entity.getWorld().getBlockState(entity.getPos()).getBlock() == BasicBillboards.BILLBOARD) dir = entity.getWorld().getBlockState(entity.getPos()).get(BillboardBlock.FACING);
         int rot = 0;
         if(dir == Direction.SOUTH) rot = 180;
         else if(dir == Direction.EAST) rot = 270;

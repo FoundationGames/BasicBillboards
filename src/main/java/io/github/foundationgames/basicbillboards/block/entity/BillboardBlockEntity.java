@@ -161,6 +161,7 @@ public class BillboardBlockEntity extends BlockEntity implements BlockEntityClie
             texts.put(line, text);
             cachedTexts.put(line, new LiteralText(text));
         }
+        markDirty();
         if(!world.isClient()) sync();
     }
 

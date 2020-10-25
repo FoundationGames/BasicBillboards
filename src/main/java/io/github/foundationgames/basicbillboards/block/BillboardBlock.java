@@ -18,6 +18,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
@@ -41,12 +42,15 @@ public class BillboardBlock extends BlockWithEntity {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if(world.getBlockEntity(pos) instanceof BillboardBlockEntity) player.openHandledScreen((BillboardBlockEntity)world.getBlockEntity(pos));
+        if(world.getBlockEntity(pos) instanceof BillboardBlockEntity && player.canModifyBlocks()) player.openHandledScreen((BillboardBlockEntity)world.getBlockEntity(pos));
         return ActionResult.SUCCESS;
     }
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        if(!context.isHolding(this.asItem())) {
+            return VoxelShapes.empty();
+        }
         switch(state.get(FACING)) {
             default: return NORTH_SHAPE;
             case SOUTH: return SOUTH_SHAPE;
